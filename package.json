@@ -1,0 +1,20 @@
+{
+  "name": "learning_react",
+  "version": "1.0.0",
+  "description": "first MERN app",
+  "main": "webapp.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Lucy Clarke",
+  "license": "ISC",
+  "dependencies": {
+    "babel-cli": "^6.16.0",
+    "babel-preset-react": "^6.16.0",
+    "express": "^4.14.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.16.0",
+    "babel-preset-react": "^6.16.0"
+  }
+}
