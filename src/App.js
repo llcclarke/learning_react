@@ -10,11 +10,11 @@ var JobRow = React.createClass({
   render: function(){
     return(
         <tr>
-          <td>{this.props.id}</td>
-          <td>{this.props.status}</td>
-          <td>{this.props.due}</td>
-          <td>{this.props.title}</td>
-          <td>{this.props.comments}</td>
+          <td>{this.props.job.id}</td>
+          <td>{this.props.job.status}</td>
+          <td>{this.props.job.due}</td>
+          <td>{this.props.job.title}</td>
+          <td>{this.props.job.comments}</td>
         </tr>
     )
   }
@@ -22,6 +22,9 @@ var JobRow = React.createClass({
 
 var JobTable = React.createClass({
   render: function(){
+    var jobRows = this.props.jobs.map(function(job) {
+      return <JobRow key={job.id} job={job} />
+    });
     return(
       <table>
         <thead>
@@ -34,13 +37,14 @@ var JobTable = React.createClass({
           </tr>
         </thead>
         <tbody>
-          <JobRow id={1} status="To Do" due="October 12" title="Learn React" comments="" />
-          <JobRow id={2} status="Complete" due="October 10" title="Finish Week 1 CS50x" comments="Start week 2 after" />
+          {jobRows}
         </tbody>
       </table>
     )
   }
 });
+// <JobRow id={1} status="To Do" due="October 12" title="Learn React" comments="" />
+// <JobRow id={2} status="Complete" due="October 10" title="Finish Week 1 CS50x" comments="Start week 2 after" />
 
 var JobAdd = React.createClass({
   render: function(){
@@ -50,6 +54,10 @@ var JobAdd = React.createClass({
   }
 });
 
+var jobData = [
+  {id: 1, status:'Complete', due:'Tomorrow', title:'Laundry', comments:''},
+  {id: 2, status:'To Do', due:'Next Week', title:'Book flights', comments:'under 200€'},
+];
 
 var JobList = React.createClass({
   render: function(){
@@ -58,13 +66,13 @@ var JobList = React.createClass({
         <h1> Job list </h1>
         <JobFilter />
         <hr />
-        <JobTable />
+        <JobTable jobs={jobData} />
         <hr />
         <JobAdd />
       </div>
     )
   }
-})
+});
 
 ReactDOM.render(
   <JobList />,
