@@ -43,8 +43,6 @@ var JobTable = React.createClass({
     )
   }
 });
-// <JobRow id={1} status="To Do" due="October 12" title="Learn React" comments="" />
-// <JobRow id={2} status="Complete" due="October 10" title="Finish Week 1 CS50x" comments="Start week 2 after" />
 
 var JobAdd = React.createClass({
   render: function(){
@@ -60,13 +58,16 @@ var jobData = [
 ];
 
 var JobList = React.createClass({
+  getInitialState: function() {
+    return {jobs: jobData};
+  },
   render: function(){
     return(
       <div>
         <h1> Job list </h1>
         <JobFilter />
         <hr />
-        <JobTable jobs={jobData} />
+        <JobTable jobs={this.state.jobs} />
         <hr />
         <JobAdd />
       </div>
