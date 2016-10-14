@@ -1,5 +1,6 @@
 var JobFilter = React.createClass({
   render: function(){
+    console.log("rendering job filter");
     return(
       <div>Filter jobs</div>
     )
@@ -8,6 +9,7 @@ var JobFilter = React.createClass({
 
 var JobRow = React.createClass({
   render: function(){
+    console.log("Rendering JobRow: ", this.props.job);
     return(
         <tr>
           <td>{this.props.job.id}</td>
@@ -22,6 +24,7 @@ var JobRow = React.createClass({
 
 var JobTable = React.createClass({
   render: function(){
+    console.log("Rendering job table, number of items: ", this.props.jobs.length);
     var jobRows = this.props.jobs.map(function(job) {
       return <JobRow key={job.id} job={job} />
     });
@@ -46,6 +49,7 @@ var JobTable = React.createClass({
 
 var JobAdd = React.createClass({
   render: function(){
+    console.log('Rendering job add');
     return(
       <div>Add a job</div>
     )
@@ -62,16 +66,30 @@ var JobList = React.createClass({
     return {jobs: jobData};
   },
   render: function(){
+    console.log("Rendering Job List, number of items: ", this.state.jobs.length);
     return(
       <div>
         <h1> Job list </h1>
         <JobFilter />
         <hr />
         <JobTable jobs={this.state.jobs} />
+        <button onClick={this.testNewJob}>Add Job </button>
         <hr />
         <JobAdd />
       </div>
     )
+  },
+
+  testNewJob: function(){
+    var nextId = this.state.jobs.length + 1;
+    this.addJob({id: nextId, status:'To Do', due:'November', title:'Prepare for winter', comments:''})
+  },
+
+  addJob: function(job){
+    console.log("Adding job: ", job);
+    var jobsModified = this.state.jobs.slice();
+    jobsModified.push(job);
+    this.setState({jobs: jobsModified});
   }
 });
 
