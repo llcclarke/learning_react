@@ -51,9 +51,25 @@ var JobAdd = React.createClass({
   render: function(){
     console.log('Rendering job add');
     return(
-      <div>Add a job</div>
+      <div>
+        <form name="jobAdd">
+          <input type="text" name="due" placeholder="Due" />
+          <input type="text" name="title" placeholder="Title" />
+          <input type="text" name="comments" placeholder="Comments" />
+          <button onClick={this.handleSubmit}> Add Job </button>
+        </form>
+      </div>
     )
+  },
+
+  handleSubmit: function(e) {
+    e.preventDefault();
+    var form = document.forms.jobAdd;
+    this.props.addJob({due: form.due.value, title: form.title.value, status: 'To Do', comments: form.comments.value});
+
+    form.due.value = ""; form.title.value = ""; form.comments.value= "";
   }
+
 });
 
 var jobData = [
@@ -73,22 +89,19 @@ var JobList = React.createClass({
         <JobFilter />
         <hr />
         <JobTable jobs={this.state.jobs} />
-        <button onClick={this.testNewJob}>Add Job </button>
         <hr />
-        <JobAdd />
+        <JobAdd addJob={this.addJob} />
       </div>
     )
   },
 
-  testNewJob: function(){
-    var nextId = this.state.jobs.length + 1;
-    this.addJob({id: nextId, status:'To Do', due:'November', title:'Prepare for winter', comments:''})
-  },
+
 
   addJob: function(job){
     console.log("Adding job: ", job);
     var jobsModified = this.state.jobs.slice();
     jobsModified.push(job);
+    job.id = this.state.jobs.length + 1;
     this.setState({jobs: jobsModified});
   }
 });
