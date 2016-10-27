@@ -72,14 +72,9 @@ var JobAdd = React.createClass({
 
 });
 
-var jobData = [
-  {id: 1, status:'Complete', due:'Tomorrow', title:'Laundry', comments:''},
-  {id: 2, status:'To Do', due:'Next Week', title:'Book flights', comments:'under 200€'},
-];
-
 var JobList = React.createClass({
   getInitialState: function() {
-    return {jobs: jobData};
+    return {jobs: []};
   },
   render: function(){
     console.log("Rendering Job List, number of items: ", this.state.jobs.length);
@@ -95,7 +90,11 @@ var JobList = React.createClass({
     )
   },
 
-
+componentDidMount: function(){
+  $.ajax('/api/jobs').done(function(data){
+    this.setState({jobs: data});
+  }.bind(this));
+},
 
   addJob: function(job){
     console.log("Adding job: ", job);
