@@ -2,13 +2,9 @@ var express = require('express');
 var bodyParser = require('body-parser');
 
 var app = express();
+var jobData = []
 
 app.use(express.static('static'));
-
-var jobData = [
-  {id: 1, status:'Complete', due:'Tomorrow', title:'Laundry', comments:''},
-  {id: 2, status:'To Do', due:'Next Week', title:'Book flights', comments:'under 200€'},
-];
 
 app.get('/api/jobs', function(req, res) {
 	res.json(jobData);

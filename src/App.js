@@ -95,13 +95,20 @@ componentDidMount: function(){
     this.setState({jobs: data});
   }.bind(this));
 },
-
   addJob: function(job){
     console.log("Adding job: ", job);
-    var jobsModified = this.state.jobs.slice();
-    jobsModified.push(job);
-    job.id = this.state.jobs.length + 1;
-    this.setState({jobs: jobsModified});
+    $.ajax({
+      type:'POST', url:'/api/jobs', contentType: 'application/json',
+      data: JSON.stringify(job),
+      success: function(data){
+        var job = data;
+        var jobsModified = this.state.jobs.concat(job);
+        this.setState({jobs: jobsModified});
+      }.bind(this),
+      error: function(xhr, status, err){
+        console.log("Error adding bug: ", err);
+      }
+    });
   }
 });
 
