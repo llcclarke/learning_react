@@ -1,3 +1,4 @@
+'use strict'
 var JobFilter = React.createClass({
   render: function(){
     console.log("rendering job filter");
@@ -12,7 +13,7 @@ var JobRow = React.createClass({
     console.log("Rendering JobRow: ", this.props.job);
     return(
         <tr>
-          <td>{this.props.job.id}</td>
+          <td>{this.props.job._id}</td>
           <td>{this.props.job.status}</td>
           <td>{this.props.job.due}</td>
           <td>{this.props.job.title}</td>
@@ -26,7 +27,7 @@ var JobTable = React.createClass({
   render: function(){
     console.log("Rendering job table, number of items: ", this.props.jobs.length);
     var jobRows = this.props.jobs.map(function(job) {
-      return <JobRow key={job.id} job={job} />
+      return <JobRow key={job._id} job={job} />
     });
     return(
       <table>
