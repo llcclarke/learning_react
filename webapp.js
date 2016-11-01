@@ -4,7 +4,6 @@ var MongoClient = require('mongodb').MongoClient;
 
 var app = express();
 var db;
-var jobData = [];
 
 app.use(express.static('static'));
 
@@ -18,9 +17,12 @@ app.use(bodyParser.json({type: '*/*'}));
 app.post('/api/jobs/', function(req, res) {
 	console.log("Req body: ", req.body);
 	var newJob = req.body;
-	newJob.id = jobData.length + 1;
-	jobData.push(newJob);
-	res.json(newJob);
+	db.collection("jobs").insertOne(newJob, function(err, result){
+		var newId = result.insertedId;
+		db.collection("jobs").find({_id: newId}).next(function(err, doc) {
+			res.json(doc);
+		});
+	});
 });
 
 MongoClient.connect('mongodb://localhost/jobsdb', function(err, dbConnection){
