@@ -1,4 +1,9 @@
 'use strict'
+var React = require('react');
+var ReactDOM = require('react-dom');
+var $ = require('jquery');
+
+
 var JobFilter = React.createClass({
   render: function(){
     console.log("rendering job filter");
