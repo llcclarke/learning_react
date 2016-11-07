@@ -30989,11 +30989,7 @@ var JobFilter = React.createClass({
 
   render: function () {
     console.log("rendering job filter");
-    return React.createElement(
-      'div',
-      null,
-      'Filter jobs'
-    );
+    return React.createElement('div', null, 'Filter jobs');
   }
 });
 
@@ -31002,35 +30998,7 @@ var JobRow = React.createClass({
 
   render: function () {
     console.log("Rendering JobRow: ", this.props.job);
-    return React.createElement(
-      'tr',
-      null,
-      React.createElement(
-        'td',
-        null,
-        this.props.job._id
-      ),
-      React.createElement(
-        'td',
-        null,
-        this.props.job.status
-      ),
-      React.createElement(
-        'td',
-        null,
-        this.props.job.due
-      ),
-      React.createElement(
-        'td',
-        null,
-        this.props.job.title
-      ),
-      React.createElement(
-        'td',
-        null,
-        this.props.job.comments
-      )
-    );
+    return React.createElement('tr', null, React.createElement('td', null, this.props.job._id), React.createElement('td', null, this.props.job.status), React.createElement('td', null, this.props.job.due), React.createElement('td', null, this.props.job.title), React.createElement('td', null, this.props.job.comments));
   }
 });
 
@@ -31038,52 +31006,11 @@ var JobTable = React.createClass({
   displayName: 'JobTable',
 
   render: function () {
-    console.log("Rendering job table, number of items: ", this.props.jobs.length);
+    console.log("Rendering jobs, number of items: ", this.props.jobs.length);
     var jobRows = this.props.jobs.map(function (job) {
       return React.createElement(JobRow, { key: job._id, job: job });
     });
-    return React.createElement(
-      'table',
-      null,
-      React.createElement(
-        'thead',
-        null,
-        React.createElement(
-          'tr',
-          null,
-          React.createElement(
-            'th',
-            null,
-            'Id'
-          ),
-          React.createElement(
-            'th',
-            null,
-            'Status'
-          ),
-          React.createElement(
-            'th',
-            null,
-            'Due'
-          ),
-          React.createElement(
-            'th',
-            null,
-            'Title'
-          ),
-          React.createElement(
-            'th',
-            null,
-            'Comments'
-          )
-        )
-      ),
-      React.createElement(
-        'tbody',
-        null,
-        jobRows
-      )
-    );
+    return React.createElement('table', null, React.createElement('thead', null, React.createElement('tr', null, React.createElement('th', null, 'Id'), React.createElement('th', null, 'Status'), React.createElement('th', null, 'Due'), React.createElement('th', null, 'Title'), React.createElement('th', null, 'Comments'))), React.createElement('tbody', null, jobRows));
   }
 });
 
@@ -31092,22 +31019,7 @@ var JobAdd = React.createClass({
 
   render: function () {
     console.log('Rendering job add');
-    return React.createElement(
-      'div',
-      null,
-      React.createElement(
-        'form',
-        { name: 'jobAdd' },
-        React.createElement('input', { type: 'text', name: 'due', placeholder: 'Due' }),
-        React.createElement('input', { type: 'text', name: 'title', placeholder: 'Title' }),
-        React.createElement('input', { type: 'text', name: 'comments', placeholder: 'Comments' }),
-        React.createElement(
-          'button',
-          { onClick: this.handleSubmit },
-          ' Add Job '
-        )
-      )
-    );
+    return React.createElement('div', null, React.createElement('form', { name: 'jobAdd' }, React.createElement('input', { type: 'text', name: 'due', placeholder: 'Due' }), React.createElement('input', { type: 'text', name: 'title', placeholder: 'Title' }), React.createElement('input', { type: 'text', name: 'comments', placeholder: 'Comments' }), React.createElement('button', { onClick: this.handleSubmit }, ' Add Job ')));
   },
 
   handleSubmit: function (e) {
@@ -31128,20 +31040,7 @@ var JobList = React.createClass({
   },
   render: function () {
     console.log("Rendering Job List, number of items: ", this.state.jobs.length);
-    return React.createElement(
-      'div',
-      null,
-      React.createElement(
-        'h1',
-        null,
-        ' Job list '
-      ),
-      React.createElement(JobFilter, null),
-      React.createElement('hr', null),
-      React.createElement(JobTable, { jobs: this.state.jobs }),
-      React.createElement('hr', null),
-      React.createElement(JobAdd, { addJob: this.addJob })
-    );
+    return React.createElement('div', null, React.createElement('h1', null, ' Job list '), React.createElement(JobFilter, null), React.createElement('hr', null), React.createElement(JobTable, { jobs: this.state.jobs }), React.createElement('hr', null), React.createElement(JobAdd, { addJob: this.addJob }));
   },
 
   componentDidMount: function () {

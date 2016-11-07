@@ -30,7 +30,7 @@ var JobRow = React.createClass({
 
 var JobTable = React.createClass({
   render: function(){
-    console.log("Rendering job table, number of items: ", this.props.jobs.length);
+    console.log("Rendering jobs, number of items: ", this.props.jobs.length);
     var jobRows = this.props.jobs.map(function(job) {
       return <JobRow key={job._id} job={job} />
     });
