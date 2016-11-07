@@ -1,3 +1,5 @@
+'use strict'
+
 var express = require('express');
 var bodyParser = require('body-parser');
 var MongoClient = require('mongodb').MongoClient;
@@ -8,10 +10,18 @@ var db;
 app.use(express.static('static'));
 
 app.get('/api/jobs', function(req, res) {
-	db.collection("jobs").find().toArray(function(err, docs) {
+	console.log("Query string", req.query);
+	var filter = {};
+	if (req.query.due)
+		filter.due = req.query.due;
+	if(req.query.status)
+		filter.status = req.query.status;
+
+	db.collection("jobs").find(filter).toArray(function(err, docs) {
 		res.json(docs);
 	});
 });
+
 
 app.use(bodyParser.json({type: '*/*'}));
 app.post('/api/jobs/', function(req, res) {
