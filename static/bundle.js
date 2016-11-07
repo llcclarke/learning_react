@@ -30982,7 +30982,41 @@ module.exports = require('./lib/React');
 
 var React = require('react');
 var ReactDOM = require('react-dom');
-var $ = require('jquery');
+
+var JobList = require('./JobList');
+
+ReactDOM.render(React.createElement(JobList, null), document.getElementById('main'));
+
+},{"./JobList":176,"react":172,"react-dom":29}],174:[function(require,module,exports){
+'use strict';
+
+var React = require('react');
+var ReactDOM = require('react-dom');
+
+var JobAdd = React.createClass({
+  displayName: 'JobAdd',
+
+  render: function () {
+    console.log('Rendering JobAdd');
+    return React.createElement('div', null, React.createElement('form', { name: 'jobAdd' }, React.createElement('input', { type: 'text', name: 'due', placeholder: 'Due' }), React.createElement('input', { type: 'text', name: 'title', placeholder: 'Title' }), React.createElement('input', { type: 'text', name: 'comments', placeholder: 'Comments' }), React.createElement('button', { onClick: this.handleSubmit }, ' Add Job ')));
+  },
+
+  handleSubmit: function (e) {
+    e.preventDefault();
+    var form = document.forms.jobAdd;
+    this.props.addJob({ due: form.due.value, title: form.title.value, status: 'To Do', comments: form.comments.value });
+    form.due.value = "";form.title.value = "";form.comments.value = "";
+  }
+
+});
+
+module.exports = JobAdd;
+
+},{"react":172,"react-dom":29}],175:[function(require,module,exports){
+'use strict';
+
+var React = require('react');
+var ReactDOM = require('react-dom');
 
 var JobFilter = React.createClass({
   displayName: 'JobFilter',
@@ -30992,6 +31026,18 @@ var JobFilter = React.createClass({
     return React.createElement('div', null, 'Filter jobs');
   }
 });
+
+module.exports = JobFilter;
+
+},{"react":172,"react-dom":29}],176:[function(require,module,exports){
+'use strict';
+
+var React = require('react');
+var ReactDOM = require('react-dom');
+var $ = require('jquery');
+
+var JobFilter = require('./JobFilter');
+var JobAdd = require('./JobAdd');
 
 var JobRow = React.createClass({
   displayName: 'JobRow',
@@ -31012,24 +31058,6 @@ var JobTable = React.createClass({
     });
     return React.createElement('table', null, React.createElement('thead', null, React.createElement('tr', null, React.createElement('th', null, 'Id'), React.createElement('th', null, 'Status'), React.createElement('th', null, 'Due'), React.createElement('th', null, 'Title'), React.createElement('th', null, 'Comments'))), React.createElement('tbody', null, jobRows));
   }
-});
-
-var JobAdd = React.createClass({
-  displayName: 'JobAdd',
-
-  render: function () {
-    console.log('Rendering job add');
-    return React.createElement('div', null, React.createElement('form', { name: 'jobAdd' }, React.createElement('input', { type: 'text', name: 'due', placeholder: 'Due' }), React.createElement('input', { type: 'text', name: 'title', placeholder: 'Title' }), React.createElement('input', { type: 'text', name: 'comments', placeholder: 'Comments' }), React.createElement('button', { onClick: this.handleSubmit }, ' Add Job ')));
-  },
-
-  handleSubmit: function (e) {
-    e.preventDefault();
-    var form = document.forms.jobAdd;
-    this.props.addJob({ due: form.due.value, title: form.title.value, status: 'To Do', comments: form.comments.value });
-
-    form.due.value = "";form.title.value = "";form.comments.value = "";
-  }
-
 });
 
 var JobList = React.createClass({
@@ -31065,6 +31093,6 @@ var JobList = React.createClass({
   }
 });
 
-ReactDOM.render(React.createElement(JobList, null), document.getElementById('main'));
+module.exports = JobList;
 
-},{"jquery":26,"react":172,"react-dom":29}]},{},[173]);
+},{"./JobAdd":174,"./JobFilter":175,"jquery":26,"react":172,"react-dom":29}]},{},[173]);
