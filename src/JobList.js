@@ -56,7 +56,7 @@ var JobList = React.createClass({
     return(
       <div>
         <h1> Job list </h1>
-        <JobFilter />
+        <JobFilter submitHandler={this.loadData}/>
         <hr />
         <JobTable jobs={this.state.jobs} />
         <hr />
@@ -66,7 +66,11 @@ var JobList = React.createClass({
   },
 
 componentDidMount: function(){
-  $.ajax('/api/jobs').done(function(data){
+  this.loadData({});
+},
+
+loadData: function(filter) {
+  $.ajax('/api/jobs', {data: filter}).done(function(data){
     this.setState({jobs: data});
   }.bind(this));
 },
