@@ -32,8 +32,10 @@ var JobFilter = React.createClass({
   },
 
   getInitialState: function(){
-    return {status: "", due: ""};
+    var initFilter = this.props.initFilter;
+    return {status: initFilter.status, due: initFilter.due};
   },
+
 
   onChangeStatus: function(e){
     this.setState({status: e.target.value});
@@ -44,7 +46,10 @@ var JobFilter = React.createClass({
   },
 
   submit: function(e){
-    this.props.submitHandler({status: this.state.status, due: this.state.due});
+    var newFilter = {};
+    if (this.state.status) newFilter.status = this.state.status;
+    if (this.state.due) newFilter.due = this.state.due;
+    this.props.submitHandler(newFilter);
   }
 });
 

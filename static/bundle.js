@@ -35779,81 +35779,12 @@ var JobFilter = React.createClass({
 
   render: function render() {
     console.log("rendering job filter");
-    return React.createElement(
-      'div',
-      null,
-      React.createElement(
-        'h3',
-        null,
-        ' Job Filter '
-      ),
-      'Status:',
-      React.createElement(
-        'select',
-        { value: this.state.status, onChange: this.onChangeStatus },
-        React.createElement(
-          'option',
-          { value: '' },
-          '(Any)'
-        ),
-        React.createElement(
-          'option',
-          { value: 'To Do' },
-          'To Do'
-        ),
-        React.createElement(
-          'option',
-          { value: 'To Be Assigned' },
-          'To Be Assigned'
-        ),
-        React.createElement(
-          'option',
-          { value: 'Complete' },
-          'Complete'
-        )
-      ),
-      React.createElement('br', null),
-      'Due:',
-      React.createElement(
-        'select',
-        { value: this.state.due, onChange: this.onChangeDue },
-        React.createElement(
-          'option',
-          { value: '' },
-          '(Any)'
-        ),
-        React.createElement(
-          'option',
-          { value: 'Today' },
-          'Today'
-        ),
-        React.createElement(
-          'option',
-          { value: 'Tomorrow' },
-          'Tomorrow'
-        ),
-        React.createElement(
-          'option',
-          { value: 'Next Week' },
-          'Next Week'
-        ),
-        React.createElement(
-          'option',
-          { value: 'Next Month' },
-          'Next Month'
-        )
-      ),
-      React.createElement('br', null),
-      React.createElement(
-        'button',
-        { onClick: this.submit },
-        'Apply'
-      )
-    );
+    return React.createElement('div', null, React.createElement('h3', null, ' Job Filter '), 'Status:', React.createElement('select', { value: this.state.status, onChange: this.onChangeStatus }, React.createElement('option', { value: '' }, '(Any)'), React.createElement('option', { value: 'To Do' }, 'To Do'), React.createElement('option', { value: 'To Be Assigned' }, 'To Be Assigned'), React.createElement('option', { value: 'Complete' }, 'Complete')), React.createElement('br', null), 'Due:', React.createElement('select', { value: this.state.due, onChange: this.onChangeDue }, React.createElement('option', { value: '' }, '(Any)'), React.createElement('option', { value: 'Today' }, 'Today'), React.createElement('option', { value: 'Tomorrow' }, 'Tomorrow'), React.createElement('option', { value: 'Next Week' }, 'Next Week'), React.createElement('option', { value: 'Next Month' }, 'Next Month')), React.createElement('br', null), React.createElement('button', { onClick: this.submit }, 'Apply'));
   },
 
   getInitialState: function getInitialState() {
-    return { status: "", due: "" };
+    var initFilter = this.props.initFilter;
+    return { status: initFilter.status, due: initFilter.due };
   },
 
   onChangeStatus: function onChangeStatus(e) {
@@ -35865,7 +35796,10 @@ var JobFilter = React.createClass({
   },
 
   submit: function submit(e) {
-    this.props.submitHandler({ status: this.state.status, due: this.state.due });
+    var newFilter = {};
+    if (this.state.status) newFilter.status = this.state.status;
+    if (this.state.due) newFilter.due = this.state.due;
+    this.props.submitHandler(newFilter);
   }
 });
 
@@ -35886,35 +35820,7 @@ var JobRow = React.createClass({
 
   render: function render() {
     console.log("Rendering JobRow: ", this.props.job);
-    return React.createElement(
-      'tr',
-      null,
-      React.createElement(
-        'td',
-        null,
-        this.props.job._id
-      ),
-      React.createElement(
-        'td',
-        null,
-        this.props.job.status
-      ),
-      React.createElement(
-        'td',
-        null,
-        this.props.job.due
-      ),
-      React.createElement(
-        'td',
-        null,
-        this.props.job.title
-      ),
-      React.createElement(
-        'td',
-        null,
-        this.props.job.comments
-      )
-    );
+    return React.createElement('tr', null, React.createElement('td', null, this.props.job._id), React.createElement('td', null, this.props.job.status), React.createElement('td', null, this.props.job.due), React.createElement('td', null, this.props.job.title), React.createElement('td', null, this.props.job.comments));
   }
 });
 
@@ -35926,48 +35832,7 @@ var JobTable = React.createClass({
     var jobRows = this.props.jobs.map(function (job) {
       return React.createElement(JobRow, { key: job._id, job: job });
     });
-    return React.createElement(
-      'table',
-      null,
-      React.createElement(
-        'thead',
-        null,
-        React.createElement(
-          'tr',
-          null,
-          React.createElement(
-            'th',
-            null,
-            'Id'
-          ),
-          React.createElement(
-            'th',
-            null,
-            'Status'
-          ),
-          React.createElement(
-            'th',
-            null,
-            'Due'
-          ),
-          React.createElement(
-            'th',
-            null,
-            'Title'
-          ),
-          React.createElement(
-            'th',
-            null,
-            'Comments'
-          )
-        )
-      ),
-      React.createElement(
-        'tbody',
-        null,
-        jobRows
-      )
-    );
+    return React.createElement('table', null, React.createElement('thead', null, React.createElement('tr', null, React.createElement('th', null, 'Id'), React.createElement('th', null, 'Status'), React.createElement('th', null, 'Due'), React.createElement('th', null, 'Title'), React.createElement('th', null, 'Comments'))), React.createElement('tbody', null, jobRows));
   }
 });
 
@@ -35979,22 +35844,8 @@ var JobList = React.createClass({
   },
   render: function render() {
     console.log("Rendering Job List, number of items: ", this.state.jobs.length);
-    return React.createElement(
-      'div',
-      null,
-      React.createElement(
-        'h1',
-        null,
-        ' Job list '
-      ),
-      React.createElement(JobFilter, { submitHandler: this.loadData }),
-      React.createElement('hr', null),
-      React.createElement(JobTable, { jobs: this.state.jobs }),
-      React.createElement('hr', null),
-      React.createElement(JobAdd, { addJob: this.addJob })
-    );
+    return React.createElement('div', null, React.createElement('h1', null, ' Job list '), React.createElement(JobFilter, { submitHandler: this.changeFilter, initFilter: this.props.location.query }), React.createElement('hr', null), React.createElement(JobTable, { jobs: this.state.jobs }), React.createElement('hr', null), React.createElement(JobAdd, { addJob: this.addJob }));
   },
-
   componentDidMount: function componentDidMount() {
     this.loadData({});
   },
@@ -36004,6 +35855,14 @@ var JobList = React.createClass({
       this.setState({ jobs: data });
     }.bind(this));
   },
+
+  changeFilter: function changeFilter(newFilter) {
+    console.log(newFilter);
+    this.props.router.push({ search: '?' + $.param(newFilter) });
+    console.log({ search: '?' + $.param(newFilter) });
+    this.loadData(newFilter);
+  },
+
   addJob: function addJob(job) {
     console.log("Adding job: ", job);
     $.ajax({

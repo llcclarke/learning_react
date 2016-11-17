@@ -56,7 +56,7 @@ var JobList = React.createClass({
     return(
       <div>
         <h1> Job list </h1>
-        <JobFilter submitHandler={this.loadData}/>
+        <JobFilter submitHandler={this.changeFilter} initFilter={this.props.location.query}/>
         <hr />
         <JobTable jobs={this.state.jobs} />
         <hr />
@@ -64,7 +64,6 @@ var JobList = React.createClass({
       </div>
     )
   },
-
 componentDidMount: function(){
   this.loadData({});
 },
@@ -74,6 +73,14 @@ loadData: function(filter) {
     this.setState({jobs: data});
   }.bind(this));
 },
+
+changeFilter: function(newFilter){
+  console.log(newFilter)
+  this.props.router.push({search: '?' + $.param(newFilter)});
+  console.log({search: '?' + $.param(newFilter)})
+  this.loadData(newFilter);
+},
+
   addJob: function(job){
     console.log("Adding job: ", job);
     $.ajax({
