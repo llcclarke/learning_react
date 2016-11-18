@@ -5,7 +5,7 @@ var ReactDOM = require('react-dom');
 
 var JobAdd = React.createClass({
   render: function(){
-    console.log('Rendering JobAdd');
+    //console.log('Rendering JobAdd');
     return(
       <div>
         <form name="jobAdd">

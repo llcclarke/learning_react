@@ -5,7 +5,7 @@ var ReactDOM = require('react-dom');
 
 var JobFilter = React.createClass({
   render: function(){
-    console.log("rendering job filter");
+    console.log("rendering job filter, state =", this.state);
     return(
       <div>
         <h3> Job Filter </h3>
@@ -36,6 +36,15 @@ var JobFilter = React.createClass({
     return {status: initFilter.status, due: initFilter.due};
   },
 
+  componentWillReceiveProps: function(newProps){
+    if (newProps.initFilter.status === this.state.status
+      && newProps.initFilter.due === this.state.due){
+        console.log("JobFilter: componentWillReceiveProps, no change");
+        return;
+      }
+      console.log("JobFilter: componentWillReceiveProps, new filter: ", newProps.initFilter);
+      this.setState({status: newProps.initFilter.status, due: newProps.initFilter.due});
+  },
 
   onChangeStatus: function(e){
     this.setState({status: e.target.value});

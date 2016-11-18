@@ -35738,23 +35738,8 @@ var JobAdd = React.createClass({
   displayName: 'JobAdd',
 
   render: function render() {
-    console.log('Rendering JobAdd');
-    return React.createElement(
-      'div',
-      null,
-      React.createElement(
-        'form',
-        { name: 'jobAdd' },
-        React.createElement('input', { type: 'text', name: 'due', placeholder: 'Due' }),
-        React.createElement('input', { type: 'text', name: 'title', placeholder: 'Title' }),
-        React.createElement('input', { type: 'text', name: 'comments', placeholder: 'Comments' }),
-        React.createElement(
-          'button',
-          { onClick: this.handleSubmit },
-          ' Add Job '
-        )
-      )
-    );
+    //console.log('Rendering JobAdd');
+    return React.createElement('div', null, React.createElement('form', { name: 'jobAdd' }, React.createElement('input', { type: 'text', name: 'due', placeholder: 'Due' }), React.createElement('input', { type: 'text', name: 'title', placeholder: 'Title' }), React.createElement('input', { type: 'text', name: 'comments', placeholder: 'Comments' }), React.createElement('button', { onClick: this.handleSubmit }, ' Add Job ')));
   },
 
   handleSubmit: function handleSubmit(e) {
@@ -35778,13 +35763,22 @@ var JobFilter = React.createClass({
   displayName: 'JobFilter',
 
   render: function render() {
-    console.log("rendering job filter");
+    console.log("rendering job filter, state =", this.state);
     return React.createElement('div', null, React.createElement('h3', null, ' Job Filter '), 'Status:', React.createElement('select', { value: this.state.status, onChange: this.onChangeStatus }, React.createElement('option', { value: '' }, '(Any)'), React.createElement('option', { value: 'To Do' }, 'To Do'), React.createElement('option', { value: 'To Be Assigned' }, 'To Be Assigned'), React.createElement('option', { value: 'Complete' }, 'Complete')), React.createElement('br', null), 'Due:', React.createElement('select', { value: this.state.due, onChange: this.onChangeDue }, React.createElement('option', { value: '' }, '(Any)'), React.createElement('option', { value: 'Today' }, 'Today'), React.createElement('option', { value: 'Tomorrow' }, 'Tomorrow'), React.createElement('option', { value: 'Next Week' }, 'Next Week'), React.createElement('option', { value: 'Next Month' }, 'Next Month')), React.createElement('br', null), React.createElement('button', { onClick: this.submit }, 'Apply'));
   },
 
   getInitialState: function getInitialState() {
     var initFilter = this.props.initFilter;
     return { status: initFilter.status, due: initFilter.due };
+  },
+
+  componentWillReceiveProps: function componentWillReceiveProps(newProps) {
+    if (newProps.initFilter.status === this.state.status && newProps.initFilter.due === this.state.due) {
+      console.log("JobFilter: componentWillReceiveProps, no change");
+      return;
+    }
+    console.log("JobFilter: componentWillReceiveProps, new filter: ", newProps.initFilter);
+    this.setState({ status: newProps.initFilter.status, due: newProps.initFilter.due });
   },
 
   onChangeStatus: function onChangeStatus(e) {
@@ -35819,7 +35813,7 @@ var JobRow = React.createClass({
   displayName: 'JobRow',
 
   render: function render() {
-    console.log("Rendering JobRow: ", this.props.job);
+    // console.log("Rendering JobRow: ", this.props.job);
     return React.createElement('tr', null, React.createElement('td', null, this.props.job._id), React.createElement('td', null, this.props.job.status), React.createElement('td', null, this.props.job.due), React.createElement('td', null, this.props.job.title), React.createElement('td', null, this.props.job.comments));
   }
 });
@@ -35828,7 +35822,7 @@ var JobTable = React.createClass({
   displayName: 'JobTable',
 
   render: function render() {
-    console.log("Rendering jobs, number of items: ", this.props.jobs.length);
+    // console.log("Rendering jobs, number of items: ", this.props.jobs.length);
     var jobRows = this.props.jobs.map(function (job) {
       return React.createElement(JobRow, { key: job._id, job: job });
     });
@@ -35843,14 +35837,30 @@ var JobList = React.createClass({
     return { jobs: [] };
   },
   render: function render() {
-    console.log("Rendering Job List, number of items: ", this.state.jobs.length);
+    console.log("Rendering JobList, number of items: ", this.state.jobs.length);
     return React.createElement('div', null, React.createElement('h1', null, ' Job list '), React.createElement(JobFilter, { submitHandler: this.changeFilter, initFilter: this.props.location.query }), React.createElement('hr', null), React.createElement(JobTable, { jobs: this.state.jobs }), React.createElement('hr', null), React.createElement(JobAdd, { addJob: this.addJob }));
   },
   componentDidMount: function componentDidMount() {
+    console.log("JobList: componentDidMount");
     this.loadData({});
   },
 
+  componentDidUpdate: function componentDidUpdate(prevProps) {
+    var oldQuery = prevProps.location.query;
+    var newQuery = this.props.location.query;
+    if (oldQuery.status === newQuery.status && oldQuery.due === newQuery.due) {
+      console.log("JobList: componentDidUpdate, no change in filter, not updating");
+      return;
+    } else {
+      console.log("JobList: componentDidUpdate, loading data with new filter");
+      this.loadData();
+    }
+  },
+
   loadData: function loadData(filter) {
+    var query = this.props.location.query || {};
+    var filter = { due: query.due, status: query.status };
+
     $.ajax('/api/jobs', { data: filter }).done(function (data) {
       this.setState({ jobs: data });
     }.bind(this));

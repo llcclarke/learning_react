@@ -9,7 +9,7 @@ var JobAdd = require('./JobAdd');
 
 var JobRow = React.createClass({
   render: function(){
-    console.log("Rendering JobRow: ", this.props.job);
+    // console.log("Rendering JobRow: ", this.props.job);
     return(
         <tr>
           <td>{this.props.job._id}</td>
@@ -24,7 +24,7 @@ var JobRow = React.createClass({
 
 var JobTable = React.createClass({
   render: function(){
-    console.log("Rendering jobs, number of items: ", this.props.jobs.length);
+    // console.log("Rendering jobs, number of items: ", this.props.jobs.length);
     var jobRows = this.props.jobs.map(function(job) {
       return <JobRow key={job._id} job={job} />
     });
@@ -52,7 +52,7 @@ var JobList = React.createClass({
     return {jobs: []};
   },
   render: function(){
-    console.log("Rendering Job List, number of items: ", this.state.jobs.length);
+    console.log("Rendering JobList, number of items: ", this.state.jobs.length);
     return(
       <div>
         <h1> Job list </h1>
@@ -65,10 +65,27 @@ var JobList = React.createClass({
     )
   },
 componentDidMount: function(){
+  console.log("JobList: componentDidMount");
   this.loadData({});
 },
 
+componentDidUpdate: function(prevProps){
+  var oldQuery = prevProps.location.query;
+  var newQuery = this.props.location.query;
+  if( oldQuery.status === newQuery.status &&
+      oldQuery.due === newQuery.due){
+        console.log("JobList: componentDidUpdate, no change in filter, not updating");
+        return;
+      }else{
+        console.log("JobList: componentDidUpdate, loading data with new filter");
+        this.loadData();
+      }
+},
+
 loadData: function(filter) {
+  var query = this.props.location.query || {};
+  var filter = {due: query.due, status: query.status};
+
   $.ajax('/api/jobs', {data: filter}).done(function(data){
     this.setState({jobs: data});
   }.bind(this));
