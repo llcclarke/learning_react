@@ -26,9 +26,3 @@ ReactDOM.render(
   ),
   document.getElementById('main')
 );
-//
-//
-// ReactDOM.render(
-//   <JobList />,
-//   document.getElementById('main')
-// );

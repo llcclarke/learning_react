@@ -3,6 +3,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var MongoClient = require('mongodb').MongoClient;
+var ObjectId = require('mongodb').ObjectID;
 
 var app = express();
 var db;
@@ -24,6 +25,7 @@ app.get('/api/jobs', function(req, res) {
 
 
 app.use(bodyParser.json({type: '*/*'}));
+
 app.post('/api/jobs/', function(req, res) {
 	console.log("Req body: ", req.body);
 	var newJob = req.body;
@@ -33,6 +35,13 @@ app.post('/api/jobs/', function(req, res) {
 			res.json(doc);
 		});
 	});
+});
+
+
+app.get('/api/jobs/:id', function(req, res) {
+  db.collection("jobs").findOne({_id: ObjectId(req.params.id)}, function(err, job) {
+    res.json(job);
+  });
 });
 
 MongoClient.connect('mongodb://localhost/jobsdb', function(err, dbConnection){
