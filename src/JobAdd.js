@@ -20,7 +20,7 @@ var JobAdd = React.createClass({
             <option value="Next Week">Next Week</option>
             <option value="Next Month">Next Month</option>
           </select>
-          <input type="text" name="title" placeholder="Title" />
+          f<input type="text" name="title" placeholder="Title" />
           <input type="text" name="comments" placeholder="Comments" />
           <button onClick={this.handleSubmit}> Add Job </button>
         </form>
