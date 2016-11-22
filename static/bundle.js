@@ -35695,34 +35695,20 @@ var _reactRouter = require('react-router');
 var React = require('react');
 var ReactDOM = require('react-dom');
 
-
 var JobList = require('./JobList');
+var JobEdit = require('./JobEdit');
 
 var NoMatch = React.createClass({
   displayName: 'NoMatch',
 
   render: function render() {
-    return React.createElement(
-      'h2',
-      null,
-      'No match for the  route'
-    );
+    return React.createElement('h2', null, 'No match for the  route');
   }
 });
 
-ReactDOM.render(React.createElement(
-  'div',
-  null,
-  React.createElement(
-    _reactRouter.Router,
-    { history: _reactRouter.hashHistory },
-    React.createElement(_reactRouter.Route, { path: '/jobs', component: JobList }),
-    React.createElement(_reactRouter.Redirect, { from: '/', to: '/jobs' }),
-    React.createElement(_reactRouter.Route, { path: '*', component: NoMatch })
-  )
-), document.getElementById('main'));
+ReactDOM.render(React.createElement('div', null, React.createElement(_reactRouter.Router, { history: _reactRouter.hashHistory }, React.createElement(_reactRouter.Route, { path: '/jobs', component: JobList }), React.createElement(_reactRouter.Route, { path: '/jobs/:id', component: JobEdit }), React.createElement(_reactRouter.Redirect, { from: '/', to: '/jobs' }), React.createElement(_reactRouter.Route, { path: '*', component: NoMatch }))), document.getElementById('main'));
 
-},{"./JobList":232,"react":226,"react-dom":50,"react-router":77}],230:[function(require,module,exports){
+},{"./JobEdit":231,"./JobList":233,"react":226,"react-dom":50,"react-router":77}],230:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -35763,6 +35749,76 @@ var JobAdd = React.createClass({
 module.exports = JobAdd;
 
 },{"react":226,"react-dom":50}],231:[function(require,module,exports){
+'use strict';
+
+var React = require('react');
+var ReactDOM = require('react-dom');
+var $ = require('jquery');
+
+var JobEdit = React.createClass({
+  displayName: 'JobEdit',
+
+  render: function render() {
+    return React.createElement('div', null, 'Edit Job: ', this.props.params.id, React.createElement('br', null), React.createElement('form', { onSubmit: this.submit }, 'Status:', React.createElement('select', { name: 'status', value: this.state.status, onChange: this.onChangeStatus }, React.createElement('option', { value: 'Complete' }, 'Complete'), React.createElement('option', { value: 'To Do' }, 'To Do'), React.createElement('option', { value: 'To Be Assigned' }, 'To Be Assigned')), React.createElement('br', null), 'Due:', React.createElement('select', { name: 'due', value: this.state.due, onChange: this.onChangeDue }, React.createElement('option', { value: 'Today' }, 'Today'), React.createElement('option', { value: 'Tomorrow' }, 'Tomorrow'), React.createElement('option', { value: 'Next Week' }, 'Next Week'), React.createElement('option', { value: 'Next Month' }, 'Next Month')), React.createElement('br', null), 'Title: ', React.createElement('input', { type: 'text', value: this.state.title, onChange: this.onChangeTitle }), React.createElement('br', null), 'Comments:', React.createElement('input', { type: 'text', value: this.state.comments, onChange: this.onChangeComments }), React.createElement('br', null), React.createElement('button', { type: 'submit' }, 'Submit')));
+  },
+
+  getInitialState: function getInitialState() {
+    return {};
+  },
+
+  componentDidMount: function componentDidMount() {
+    this.loadData();
+  },
+
+  componentDidUpdate: function componentDidUpdate() {
+    console.log("JobEdit: componentDidUpdate", prevProps.params.id, this.props.params.id);
+    if (this.props.params.id != prevProps.params.id) {
+      this.loadData();
+    }
+  },
+
+  loadData: function loadData() {
+    $.ajax('/api/jobs' + this.props.params.id).done(function (job) {
+      this.setState(job);
+    }.bind(this));
+  },
+
+  onChangeStatus: function onChangeStatus(e) {
+    this.setState({ status: e.target.value });
+  },
+  onChangeDue: function onChangeDue(e) {
+    this.setState({ due: e.target.value });
+  },
+  onChangeTitle: function onChangeTitle(e) {
+    this.setState({ title: e.target.value });
+  },
+  onChangeComments: function onChangeComments(e) {
+    this.setState({ comments: e.target.value });
+  },
+
+  submit: function submit(e) {
+    e.preventDefault();
+    var job = {
+      status: this.state.status,
+      due: this.state.due,
+      title: this.state.title,
+      comments: this.state.comments
+    };
+
+    $.ajax({
+      url: '/api/jobs/' + this.props.params.id, type: 'PUT', contentType: 'application/json',
+      data: JSON.stringify(job),
+      dataType: 'json',
+      success: function (job) {
+        this.setState(job);
+      }.bind(this)
+    });
+  }
+});
+
+module.exports = JobEdit;
+
+},{"jquery":46,"react":226,"react-dom":50}],232:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -35878,7 +35934,7 @@ var JobFilter = React.createClass({
 
 module.exports = JobFilter;
 
-},{"react":226,"react-dom":50}],232:[function(require,module,exports){
+},{"react":226,"react-dom":50}],233:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -36053,4 +36109,4 @@ var JobList = React.createClass({
 
 module.exports = JobList;
 
-},{"./JobAdd":230,"./JobFilter":231,"jquery":46,"react":226,"react-dom":50}]},{},[229]);
+},{"./JobAdd":230,"./JobFilter":232,"jquery":46,"react":226,"react-dom":50}]},{},[229]);
