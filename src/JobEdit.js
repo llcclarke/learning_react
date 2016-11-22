@@ -44,7 +44,7 @@ var JobEdit = React.createClass({
     this.loadData();
   },
 
-  componentDidUpdate: function(){
+  componentDidUpdate: function(prevProps){
     console.log("JobEdit: componentDidUpdate", prevProps.params.id, this.props.params.id);
     if (this.props.params.id != prevProps.params.id){
       this.loadData();
@@ -52,7 +52,7 @@ var JobEdit = React.createClass({
   },
 
   loadData: function(){
-    $.ajax('/api/jobs' + this.props.params.id) .done(function(job){
+    $.ajax('/api/jobs/' + this.props.params.id) .done(function(job){
       this.setState(job);
     }.bind(this));
   },

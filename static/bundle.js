@@ -35719,22 +35719,7 @@ var JobAdd = React.createClass({
 
   render: function render() {
     //console.log('Rendering JobAdd');
-    return React.createElement(
-      'div',
-      null,
-      React.createElement(
-        'form',
-        { name: 'jobAdd' },
-        React.createElement('input', { type: 'text', name: 'due', placeholder: 'Due' }),
-        React.createElement('input', { type: 'text', name: 'title', placeholder: 'Title' }),
-        React.createElement('input', { type: 'text', name: 'comments', placeholder: 'Comments' }),
-        React.createElement(
-          'button',
-          { onClick: this.handleSubmit },
-          ' Add Job '
-        )
-      )
-    );
+    return React.createElement('div', null, React.createElement('form', { name: 'jobAdd' }, React.createElement('select', { name: 'status' }, React.createElement('option', { value: 'Complete' }, 'Complete'), React.createElement('option', { value: 'To Do' }, 'To Do'), React.createElement('option', { value: 'To Be Assigned' }, 'To Be Assigned')), React.createElement('select', { name: 'due' }, React.createElement('option', { value: 'Today' }, 'Today'), React.createElement('option', { value: 'Tomorrow' }, 'Tomorrow'), React.createElement('option', { value: 'Next Week' }, 'Next Week'), React.createElement('option', { value: 'Next Month' }, 'Next Month')), React.createElement('input', { type: 'text', name: 'title', placeholder: 'Title' }), React.createElement('input', { type: 'text', name: 'comments', placeholder: 'Comments' }), React.createElement('button', { onClick: this.handleSubmit }, ' Add Job ')));
   },
 
   handleSubmit: function handleSubmit(e) {
@@ -35770,7 +35755,7 @@ var JobEdit = React.createClass({
     this.loadData();
   },
 
-  componentDidUpdate: function componentDidUpdate() {
+  componentDidUpdate: function componentDidUpdate(prevProps) {
     console.log("JobEdit: componentDidUpdate", prevProps.params.id, this.props.params.id);
     if (this.props.params.id != prevProps.params.id) {
       this.loadData();
@@ -35778,7 +35763,7 @@ var JobEdit = React.createClass({
   },
 
   loadData: function loadData() {
-    $.ajax('/api/jobs' + this.props.params.id).done(function (job) {
+    $.ajax('/api/jobs/' + this.props.params.id).done(function (job) {
       this.setState(job);
     }.bind(this));
   },

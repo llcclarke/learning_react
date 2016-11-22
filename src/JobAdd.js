@@ -9,7 +9,17 @@ var JobAdd = React.createClass({
     return(
       <div>
         <form name="jobAdd">
-          <input type="text" name="due" placeholder="Due" />
+          <select name="status" >
+            <option value="Complete">Complete</option>
+            <option value="To Do">To Do</option>
+            <option value="To Be Assigned">To Be Assigned</option>
+          </select>
+          <select name="due" >
+            <option value="Today">Today</option>
+            <option value="Tomorrow">Tomorrow</option>
+            <option value="Next Week">Next Week</option>
+            <option value="Next Month">Next Month</option>
+          </select>
           <input type="text" name="title" placeholder="Title" />
           <input type="text" name="comments" placeholder="Comments" />
           <button onClick={this.handleSubmit}> Add Job </button>
