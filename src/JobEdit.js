@@ -3,6 +3,8 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 var $ = require('jquery');
+import { Link } from 'react-router';
+
 
 var JobEdit = React.createClass({
   render: function(){
@@ -30,7 +32,7 @@ var JobEdit = React.createClass({
           <br/>
           Comments:<input type="text" value={this.state.comments} onChange={this.onChangeComments} />
           <br/>
-          <button type="submit">Submit</button>
+          <button type="submit">Submit</button><Link to="/jobs">Back to Job List</Link>
         </form>
       </div>
     );

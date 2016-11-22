@@ -3,6 +3,8 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 var $ = require('jquery');
+import { Link } from 'react-router';
+
 
 var JobFilter = require('./JobFilter');
 var JobAdd = require('./JobAdd');
@@ -12,7 +14,9 @@ var JobRow = React.createClass({
     // console.log("Rendering JobRow: ", this.props.job);
     return(
         <tr>
-          <td>{this.props.job._id}</td>
+          <td>
+            <Link to={"/jobs/" + this.props.job._id}>{this.props.job._id}</Link>
+            </td>
           <td>{this.props.job.status}</td>
           <td>{this.props.job.due}</td>
           <td>{this.props.job.title}</td>
