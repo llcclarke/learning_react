@@ -37,11 +37,23 @@ app.post('/api/jobs/', function(req, res) {
 	});
 });
 
-
 app.get('/api/jobs/:id', function(req, res) {
   db.collection("jobs").findOne({_id: ObjectId(req.params.id)}, function(err, job) {
     res.json(job);
   });
+});
+
+app.put('/api/jobs/:id', function(req, res) {
+	var job = req.body;
+	console.log("Modifying job:", req.params.id, job);
+	var oid = ObjectId(req.params.id);
+	db.collection("jobs").updateOne({_id: oid}, job, function(err, result){
+		console.log("going more stuff")
+		db.collection("jobs").find({_id: oid}).next(function(err, doc){
+			console.log("and some more")
+			res.send(doc);
+		});
+	});
 });
 
 MongoClient.connect('mongodb://localhost/jobsdb', function(err, dbConnection){
